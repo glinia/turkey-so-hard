@@ -13,6 +13,7 @@ public class Robot extends IterativeRobot {
     private Joystick leftStick, rightStick;
 
     private Drivetrain drivetrain;
+    private Shooter shooter;
     private Compressor compressor;
 
     public void robotInit() {
@@ -26,19 +27,29 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
+        buttonsPressed();
+
         drive();
     }
 
     private void drive() {
+        double left  = leftStick.getY();
+        double right = rightStick.getY();
+
+        drivetrain.drive(left, right);
+    }
+
+    private void buttonsPressed() {
         if (rightStick.getToggleButton(1)) {
             drivetrain.shift();
             print("Shifting at " + System.currentTimeMillis());
         }
 
-        double left  = leftStick.getY();
-        double right = rightStick.getY();
-
-        drivetrain.drive(left, right);
+        if (leftStick.get(1)) {
+            shooter.engage();
+        } else {
+            shooter.disengage();
+        }
     }
 
     private void print(String message) {
