@@ -27,7 +27,7 @@ public class Consts {
 
     // shooter
     final static int FLYWHEEL_ADDR = 4;
-    final static int FLYWHEEL_SPEED = 1;
+    final static int FLYWHEEL_SPEED = -1;
 
     // intake
     final static int INTAKE_LEFT_ADDR = 3, INTAKE_RIGHT_ADDR = 4;

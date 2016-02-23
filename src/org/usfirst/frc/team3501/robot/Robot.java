@@ -21,6 +21,7 @@ public class Robot extends IterativeRobot {
         rightStick = new Joystick(RIGHT_JOYSTICK_PORT);
 
         drivetrain = new Drivetrain();
+        shooter    = new Shooter();
 
         compressor = new Compressor(PCM_A);
         compressor.start();
