@@ -21,10 +21,10 @@ public class Drivetrain {
         robotDrive = new RobotDrive(frontLeft,  rearLeft,
                                     frontRight, rearRight);
 
-        leftShifter  = new DoubleSolenoid(PCM_B, 5, 1);
-        rightShifter = new DoubleSolenoid(PCM_B, 6, 0);
+        leftShifter  = new DoubleSolenoid(PCM_B, 1, 5);
+        rightShifter = new DoubleSolenoid(PCM_B, 0, 6);
 
-        shifterState = HIGH_GEAR;
+        shifterState = LOW_GEAR;
         setShifters(shifterState);
     }
 

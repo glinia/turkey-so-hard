@@ -17,9 +17,9 @@ public class Shooter {
     public Shooter() {
         flywheel = new CANTalon(FLYWHEEL_ADDR);
 
-        hoodLeft  = new DoubleSolenoid(PCM_A, 2, 4);
-        hoodRight = new DoubleSolenoid(PCM_B, 4, 2);
-        step      = new DoubleSolenoid(PCM_A, 1, 5);
+        hoodLeft  = new DoubleSolenoid(PCM_A, 4, 2);
+        hoodRight = new DoubleSolenoid(PCM_B, 2, 4);
+        step      = new DoubleSolenoid(PCM_A, 5, 1);
 
         setHood(CLOSE);
         disengage();
