@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class Shooter {
 
     private CANTalon flywheel;
-    private DoubleSolenoid hoodA, hoodB, step;
+    private DoubleSolenoid hoodLeft, hoodRight, step;
 
     private final DoubleSolenoid.Value OPEN  = DoubleSolenoid.Value.kForward,
                                        CLOSE = DoubleSolenoid.Value.kReverse,
@@ -17,9 +17,9 @@ public class Shooter {
     public Shooter() {
         flywheel = new CANTalon(FLYWHEEL_ADDR);
 
-        hoodA = new DoubleSolenoid(PCM_A, 4, 5);
-        hoodB = new DoubleSolenoid(PCM_A, 6, 7);
-        step  = new DoubleSolenoid(PCM_B, 0, 1);
+        hoodLeft  = new DoubleSolenoid(PCM_A, 2, 4);
+        hoodRight = new DoubleSolenoid(PCM_B, 4, 2);
+        step      = new DoubleSolenoid(PCM_A, 1, 5);
 
         setHood(CLOSE);
         disengage();
@@ -55,7 +55,7 @@ public class Shooter {
     }
 
     private void setHood(DoubleSolenoid.Value value) {
-        hoodA.set(value);
-        hoodB.set(value);
+        hoodLeft.set(value);
+        hoodRight.set(value);
     }
 }
