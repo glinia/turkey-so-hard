@@ -34,7 +34,11 @@ public class Drivetrain {
         if (Math.abs(right) < MIN_DRIVE_JOYSTICK_INPUT)
             right = 0;
 
-        driveRaw(left, right);
+        double powerCoeff = (shifterState == LOW_GEAR)
+                                ? LOW_GEAR_POWER_COEFF
+                                : HIGH_GEAR_POWER_COEFF;
+
+        driveRaw(powerCoeff * left, powerCoeff * right);
     }
 
     public void driveRaw(double left, double right) {

@@ -16,6 +16,7 @@ public class Consts {
 
     // drivetrain
     final static double MIN_DRIVE_JOYSTICK_INPUT = 0.1;
+    final static double LOW_GEAR_POWER_COEFF = 1, HIGH_GEAR_POWER_COEFF = 1;
 
     final static int FRONT_LEFT_ADDR = 1, FRONT_RIGHT_ADDR = 5,
                      REAR_LEFT_ADDR  = 2, REAR_RIGHT_ADDR  = 6;

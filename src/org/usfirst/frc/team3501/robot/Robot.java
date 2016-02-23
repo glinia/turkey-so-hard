@@ -40,15 +40,21 @@ public class Robot extends IterativeRobot {
     }
 
     private void buttonsPressed() {
-        if (rightStick.getToggleButton(1)) {
+        if (leftStick.getToggleButton(1)) {
             drivetrain.shift();
             print("Shifting at " + System.currentTimeMillis());
         }
 
-        if (leftStick.get(1)) {
+        if (rightStick.get(1)) {
             shooter.engage();
         } else {
             shooter.disengage();
+        }
+
+        if (rightStick.get(2)) {
+            shooter.shoot();
+        } else {
+            shooter.load();
         }
     }
 
