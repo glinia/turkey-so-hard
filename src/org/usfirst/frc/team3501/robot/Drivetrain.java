@@ -1,11 +1,16 @@
 package org.usfirst.frc.team3501.robot;
 
 import static org.usfirst.frc.team3501.robot.Consts.*;
+
+import java.util.stream.Stream;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 public class Drivetrain {
+
+    private CANTalon frontLeft, frontRight, rearLeft, rearRight;
 
     private RobotDrive robotDrive;
     private DoubleSolenoid leftShifter, rightShifter;
@@ -13,10 +18,10 @@ public class Drivetrain {
     private DoubleSolenoid.Value shifterState;
 
     public Drivetrain() {
-        CANTalon frontLeft  = new CANTalon(FRONT_LEFT_ADDR);
-        CANTalon frontRight = new CANTalon(FRONT_RIGHT_ADDR);
-        CANTalon rearLeft   = new CANTalon(REAR_LEFT_ADDR);
-        CANTalon rearRight  = new CANTalon(REAR_RIGHT_ADDR);
+        frontLeft  = new CANTalon(FRONT_LEFT_ADDR);
+        frontRight = new CANTalon(FRONT_RIGHT_ADDR);
+        rearLeft   = new CANTalon(REAR_LEFT_ADDR);
+        rearRight  = new CANTalon(REAR_RIGHT_ADDR);
 
         robotDrive = new RobotDrive(frontLeft,  rearLeft,
                                     frontRight, rearRight);
@@ -26,6 +31,7 @@ public class Drivetrain {
 
         shifterState = LOW_GEAR;
         setShifters(shifterState);
+        coast();
     }
 
     public void drive(double left, double right) {
@@ -67,6 +73,18 @@ public class Drivetrain {
         }
 
         System.err.println("Drivetrain::shift is being weird.");
+    }
+
+    public void brake() {
+        allTalons().forEach(t -> t.enableBrakeMode(true));
+    }
+
+    public void coast() {
+        allTalons().forEach(t -> t.enableBrakeMode(false));
+    }
+
+    private Stream<CANTalon> allTalons() {
+        return Stream.of(frontLeft, frontRight, rearLeft, rearRight);
     }
 
     private void setShifters(DoubleSolenoid.Value value) {
