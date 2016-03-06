@@ -1,61 +1,30 @@
 package org.usfirst.frc.team3501.robot;
 
 import static org.usfirst.frc.team3501.robot.Consts.*;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Shooter {
 
-    private CANTalon flywheel;
-    private DoubleSolenoid hoodLeft, hoodRight, step;
+    private DoubleSolenoid left, right;
 
-    private final DoubleSolenoid.Value OPEN  = DoubleSolenoid.Value.kForward,
-                                       CLOSE = DoubleSolenoid.Value.kReverse,
-                                       UP    = DoubleSolenoid.Value.kReverse,
+    private final DoubleSolenoid.Value UP    = DoubleSolenoid.Value.kReverse,
                                        DOWN  = DoubleSolenoid.Value.kForward;
 
     public Shooter() {
-        flywheel = new CANTalon(FLYWHEEL_ADDR);
-
-        hoodLeft  = new DoubleSolenoid(PCM_A, 4, 2);
-        hoodRight = new DoubleSolenoid(PCM_B, 2, 4);
-        step      = new DoubleSolenoid(PCM_A, 5, 1);
-
-        setHood(CLOSE);
-        disengage();
-        step.set(DOWN);
+        left  = new DoubleSolenoid(PCM_A, 4, 2);
+        right = new DoubleSolenoid(PCM_B, 2, 4);
     }
 
     public void shoot() {
-        step.set(UP);
+        setCata(UP);
     }
 
     public void load() {
-        step.set(DOWN);
+        setCata(DOWN);
     }
 
-    public void set(double speed) {
-        flywheel.set(speed);
-    }
-
-    public void engage() {
-        set(FLYWHEEL_SPEED);
-    }
-
-    public void disengage() {
-        set(0);
-    }
-
-    public void retractHood() {
-        setHood(CLOSE);
-    }
-
-    public void openHood() {
-        setHood(OPEN);
-    }
-
-    private void setHood(DoubleSolenoid.Value value) {
-        hoodLeft.set(value);
-        hoodRight.set(value);
+    private void setCata(DoubleSolenoid.Value value) {
+        left.set(value);
+        right.set(value);
     }
 }

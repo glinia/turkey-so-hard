@@ -13,6 +13,7 @@ public class Robot extends IterativeRobot {
     private Joystick leftStick, rightStick;
 
     private Drivetrain drivetrain;
+    private Intake intake;
     private Shooter shooter;
     private Compressor compressor;
 
@@ -21,6 +22,7 @@ public class Robot extends IterativeRobot {
         rightStick = new Joystick(RIGHT_JOYSTICK_PORT);
 
         drivetrain = new Drivetrain();
+        intake     = new Intake();
         shooter    = new Shooter();
 
         compressor = new Compressor(PCM_A);
@@ -41,17 +43,25 @@ public class Robot extends IterativeRobot {
     }
 
     private void buttonsPressed() {
-        if (leftStick.getToggleButton(1)) {
-            drivetrain.shift();
-            print("Shifting at " + System.currentTimeMillis());
-        }
-
-        if (rightStick.get(1)) {
-            shooter.engage();
+        // drivetrain
+        if (leftStick.get(1)) {
+            drivetrain.shiftHigh();
         } else {
-            shooter.disengage();
+            drivetrain.shiftLow();
         }
 
+        if (leftStick.getToggleButton(7)) {
+            drivetrain.flip();
+        }
+
+        // intake
+        if (rightStick.get(1)) {
+            intake.roll(1);
+        } else {
+            intake.stop();
+        }
+
+        // shooter
         if (rightStick.get(2)) {
             shooter.shoot();
         } else {
@@ -59,6 +69,7 @@ public class Robot extends IterativeRobot {
         }
     }
 
+    @SuppressWarnings("unused")
     private void print(String message) {
         DriverStation.reportWarning(message, false);
     }

@@ -16,7 +16,8 @@ public class Consts {
 
     // drivetrain
     final static double MIN_DRIVE_JOYSTICK_INPUT = 0.1;
-    final static double LOW_GEAR_POWER_COEFF = 1, HIGH_GEAR_POWER_COEFF = 1;
+
+    static double HIGH_GEAR_POWER_COEFF = 1, LOW_GEAR_POWER_COEFF = 1;
 
     final static int FRONT_LEFT_ADDR = 1, FRONT_RIGHT_ADDR = 5,
                      REAR_LEFT_ADDR  = 2, REAR_RIGHT_ADDR  = 6;
@@ -25,10 +26,6 @@ public class Consts {
         HIGH_GEAR = DoubleSolenoid.Value.kForward,
         LOW_GEAR  = DoubleSolenoid.Value.kReverse;
 
-    // shooter
-    final static int FLYWHEEL_ADDR = 4;
-    final static int FLYWHEEL_SPEED = -1;
-
     // intake
-    final static int INTAKE_LEFT_ADDR = 3, INTAKE_RIGHT_ADDR = 4;
+    final static int INTAKE_ROLLER_ADDR = -1;
 }

@@ -83,6 +83,11 @@ public class Drivetrain {
         allTalons().forEach(t -> t.enableBrakeMode(false));
     }
 
+    public void flip() {
+        LOW_GEAR_POWER_COEFF  *= -1;
+        HIGH_GEAR_POWER_COEFF *= -1;
+    }
+
     private Stream<CANTalon> allTalons() {
         return Stream.of(frontLeft, frontRight, rearLeft, rearRight);
     }
