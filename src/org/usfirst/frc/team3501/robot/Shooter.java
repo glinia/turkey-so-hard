@@ -11,8 +11,8 @@ public class Shooter {
                                        DOWN  = DoubleSolenoid.Value.kForward;
 
     public Shooter() {
-        left  = new DoubleSolenoid(PCM_A, 4, 2);
-        right = new DoubleSolenoid(PCM_B, 2, 4);
+        left  = new DoubleSolenoid(PCM_B, 4, 1);
+        right = new DoubleSolenoid(PCM_A, 0, 1);
     }
 
     public void shoot() {

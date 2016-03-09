@@ -13,8 +13,8 @@ public class Intake {
                                        RETRACT = DoubleSolenoid.Value.kReverse;
 
     public Intake() {
-        left  = new DoubleSolenoid(PCM_A, 0, 0);
-        right = new DoubleSolenoid(PCM_A, 0, 0);
+        left  = new DoubleSolenoid(PCM_A, 5, 2);
+        right = new DoubleSolenoid(PCM_B, 5, 0);
 
         roller = new CANTalon(INTAKE_ROLLER_ADDR);
     }

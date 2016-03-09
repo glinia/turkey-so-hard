@@ -3,7 +3,6 @@ package org.usfirst.frc.team3501.robot;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 import org.usfirst.frc.team3501.robot.Joystick;
 
@@ -16,9 +15,8 @@ public class Robot extends IterativeRobot {
     private Drivetrain drivetrain;
     private Intake intake;
     private Shooter shooter;
-    private Compressor compressor;
 
-    private FireSolenoid test;
+    private Compressor compressor;
 
     public void robotInit() {
         leftStick  = new Joystick(LEFT_JOYSTICK_PORT);
@@ -30,18 +28,10 @@ public class Robot extends IterativeRobot {
 
         compressor = new Compressor(PCM_A);
         compressor.start();
-
-        test = new FireSolenoid(PCM_A, -1, -1, 0.5);
     }
 
     public void teleopPeriodic() {
         buttonsPressed();
-
-        if (rightStick.getTimedAction(3, 1.0)) {
-            test.set(Value.kForward);
-        } else if (rightStick.getTimedAction(4, 1.0)) {
-            test.set(Value.kReverse);
-        }
 
         drive();
     }
@@ -68,6 +58,8 @@ public class Robot extends IterativeRobot {
         // intake
         if (rightStick.get(1)) {
             intake.roll(1);
+        } else if (rightStick.getOne(3, 4)) {
+            intake.roll(-1);
         } else {
             intake.stop();
         }

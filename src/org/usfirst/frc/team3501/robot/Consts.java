@@ -27,5 +27,5 @@ public class Consts {
         LOW_GEAR  = DoubleSolenoid.Value.kReverse;
 
     // intake
-    final static int INTAKE_ROLLER_ADDR = -1;
+    final static int INTAKE_ROLLER_ADDR = 8;
 }

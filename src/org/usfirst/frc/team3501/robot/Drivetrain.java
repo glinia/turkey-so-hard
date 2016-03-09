@@ -26,8 +26,8 @@ public class Drivetrain {
         robotDrive = new RobotDrive(frontLeft,  rearLeft,
                                     frontRight, rearRight);
 
-        leftShifter  = new DoubleSolenoid(PCM_B, 1, 5);
-        rightShifter = new DoubleSolenoid(PCM_B, 0, 6);
+        leftShifter  = new DoubleSolenoid(PCM_B, 3, 6);
+        rightShifter = new DoubleSolenoid(PCM_B, 2, 7);
 
         shifterState = LOW_GEAR;
         setShifters(shifterState);
