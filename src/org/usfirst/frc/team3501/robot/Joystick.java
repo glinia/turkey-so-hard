@@ -40,7 +40,7 @@ public class Joystick extends edu.wpi.first.wpilibj.Joystick {
     }
 
     public boolean getOneTimed(double secs, int... buttons) {
-        return Arrays.stream(buttons).anyMatch(b -> getTimedAction(b, secs));
+        return Arrays.stream(buttons).allMatch(b -> getTimedAction(b, secs));
     }
 
 }

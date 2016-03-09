@@ -17,14 +17,14 @@ public class Consts {
     // drivetrain
     final static double MIN_DRIVE_JOYSTICK_INPUT = 0.1;
 
-    static double HIGH_GEAR_POWER_COEFF = 1, LOW_GEAR_POWER_COEFF = 1;
+    final static double HIGH_GEAR_POWER_COEFF = 1, LOW_GEAR_POWER_COEFF = 1;
 
     final static int FRONT_LEFT_ADDR = 1, FRONT_RIGHT_ADDR = 5,
                      REAR_LEFT_ADDR  = 2, REAR_RIGHT_ADDR  = 6;
 
     final static DoubleSolenoid.Value
-        HIGH_GEAR = DoubleSolenoid.Value.kForward,
-        LOW_GEAR  = DoubleSolenoid.Value.kReverse;
+        HIGH_GEAR = DoubleSolenoid.Value.kReverse,
+        LOW_GEAR  = DoubleSolenoid.Value.kForward;
 
     // intake
     final static int INTAKE_ROLLER_ADDR = 8;

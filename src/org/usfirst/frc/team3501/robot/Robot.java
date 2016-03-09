@@ -64,10 +64,16 @@ public class Robot extends IterativeRobot {
             intake.stop();
         }
 
+        if (leftStick.getOne(3, 5)) {
+            intake.extend();
+        } else if (leftStick.getOne(4, 6)) {
+            intake.retract();
+        }
+
         // shooter
         if (rightStick.get(2)) {
             shooter.shoot();
-        } else {
+        } else if (rightStick.getOne(5, 6)) {
             shooter.load();
         }
     }

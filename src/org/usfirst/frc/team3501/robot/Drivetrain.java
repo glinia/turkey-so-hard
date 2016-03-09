@@ -17,6 +17,8 @@ public class Drivetrain {
 
     private DoubleSolenoid.Value shifterState;
 
+    private boolean flipped;
+
     public Drivetrain() {
         frontLeft  = new CANTalon(FRONT_LEFT_ADDR);
         frontRight = new CANTalon(FRONT_RIGHT_ADDR);
@@ -32,6 +34,7 @@ public class Drivetrain {
         shifterState = LOW_GEAR;
         setShifters(shifterState);
         coast();
+        flipped = false;
     }
 
     public void drive(double left, double right) {
@@ -43,6 +46,12 @@ public class Drivetrain {
         double powerCoeff = (shifterState == LOW_GEAR)
                                 ? LOW_GEAR_POWER_COEFF
                                 : HIGH_GEAR_POWER_COEFF;
+
+        if (flipped) { // swap left and right, and reverse inputs
+            double temp = left;
+            left  = -right;
+            right = -temp;
+        }
 
         driveRaw(powerCoeff * left, powerCoeff * right);
     }
@@ -71,8 +80,6 @@ public class Drivetrain {
             shiftHigh();
             return;
         }
-
-        System.err.println("Drivetrain::shift is being weird.");
     }
 
     public void brake() {
@@ -84,8 +91,7 @@ public class Drivetrain {
     }
 
     public void flip() {
-        LOW_GEAR_POWER_COEFF  *= -1;
-        HIGH_GEAR_POWER_COEFF *= -1;
+        flipped = !flipped;
     }
 
     private Stream<CANTalon> allTalons() {

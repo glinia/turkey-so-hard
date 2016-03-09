@@ -7,8 +7,8 @@ public class Shooter {
 
     private DoubleSolenoid left, right;
 
-    private final DoubleSolenoid.Value UP    = DoubleSolenoid.Value.kReverse,
-                                       DOWN  = DoubleSolenoid.Value.kForward;
+    private final DoubleSolenoid.Value UP    = DoubleSolenoid.Value.kForward,
+                                       DOWN  = DoubleSolenoid.Value.kReverse;
 
     public Shooter() {
         left  = new DoubleSolenoid(PCM_B, 4, 1);
