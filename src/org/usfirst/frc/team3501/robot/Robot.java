@@ -30,6 +30,10 @@ public class Robot extends IterativeRobot {
         compressor.start();
     }
 
+    public void teleopInit() {
+        intake.retract();
+    }
+
     public void teleopPeriodic() {
         buttonsPressed();
 

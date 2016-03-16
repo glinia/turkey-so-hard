@@ -19,6 +19,8 @@ public class Drivetrain {
 
     private boolean flipped;
 
+    private double lastLeft, lastRight;
+
     public Drivetrain() {
         frontLeft  = new CANTalon(FRONT_LEFT_ADDR);
         frontRight = new CANTalon(FRONT_RIGHT_ADDR);
@@ -52,6 +54,13 @@ public class Drivetrain {
             left  = -right;
             right = -temp;
         }
+
+        // slap a running average on the ouputs
+        left = (left + 7 * lastLeft) / 8;
+        lastLeft = left;
+
+        right = (right + 7 * lastRight) / 8;
+        lastRight = right;
 
         driveRaw(powerCoeff * left, powerCoeff * right);
     }
