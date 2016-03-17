@@ -17,7 +17,7 @@ public class Drivetrain {
 
     private boolean flipped;
 
-    double oldTurn, quickStopAccumulator;
+    double oldTurn, quickStopAccumulator; // 254 stuff
 
     public Drivetrain() {
         frontLeft  = new CANTalon(FRONT_LEFT_ADDR);
@@ -40,16 +40,13 @@ public class Drivetrain {
         if (Math.abs(turn) < MIN_DRIVE_JOYSTICK_INPUT)
             turn = 0;
 
-        double powerCoeff = (shifterState == LOW_GEAR)
-                                ? LOW_GEAR_POWER_COEFF
-                                : HIGH_GEAR_POWER_COEFF;
+        forward *= (shifterState == LOW_GEAR) ? LOW_GEAR_POWER_COEFF
+                                              : HIGH_GEAR_POWER_COEFF;
 
         if (flipped) {
             forward *= -1;
             turn *= -1;
         }
-
-        forward *= powerCoeff;
 
         // begin code from github.com/Team254/FRC-2014
         double wheelNonLinearity;
@@ -85,6 +82,7 @@ public class Drivetrain {
 
         double negInertiaAccumulator = 0.0;
         double negInertiaScalar;
+
         if (shifterState == HIGH_GEAR) {
             negInertiaScalar = 5.0;
             sensitivity = 0.75; // arbitrary
@@ -116,7 +114,7 @@ public class Drivetrain {
 
         linearPower = forward;
 
-        // ignoring quickturn
+        // begin ignoring quickturn
         overPower = 0.0;
         angularPower = Math.abs(forward) * turn * sensitivity
                        - quickStopAccumulator;
@@ -155,7 +153,6 @@ public class Drivetrain {
     public void driveRaw(double left, double right) {
         frontLeft.set(left);
         rearLeft.set(left);
-
         frontRight.set(-right);
         rearRight.set(-right);
     }
