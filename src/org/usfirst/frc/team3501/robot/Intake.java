@@ -9,8 +9,11 @@ public class Intake {
     private DoubleSolenoid left, right;
     private CANTalon roller;
 
-    private final DoubleSolenoid.Value EXTEND  = DoubleSolenoid.Value.kForward,
-                                       RETRACT = DoubleSolenoid.Value.kReverse;
+    public static final DoubleSolenoid.Value
+                         EXTEND  = DoubleSolenoid.Value.kForward,
+                         RETRACT = DoubleSolenoid.Value.kReverse;
+
+    private DoubleSolenoid.Value STATE = RETRACT;
 
     public Intake() {
         left  = new DoubleSolenoid(PCM_A, 5, 2);
@@ -19,12 +22,16 @@ public class Intake {
         roller = new CANTalon(INTAKE_ROLLER_ADDR);
     }
 
+    public void update() {
+        actuate(STATE);
+    }
+
     public void extend() {
-        actuate(EXTEND);
+        STATE = EXTEND;
     }
 
     public void retract() {
-        actuate(RETRACT);
+        STATE = RETRACT;
     }
 
     public void roll(double speed) {
@@ -33,6 +40,10 @@ public class Intake {
 
     public void stop() {
         roll(0);
+    }
+
+    public DoubleSolenoid.Value getState() {
+        return STATE;
     }
 
     private void actuate(DoubleSolenoid.Value value) {

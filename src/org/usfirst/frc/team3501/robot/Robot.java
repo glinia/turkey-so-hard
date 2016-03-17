@@ -10,23 +10,16 @@ import static org.usfirst.frc.team3501.robot.Consts.*;
 
 public class Robot extends IterativeRobot {
 
-    private Joystick leftStick, rightStick;
+    private Joystick leftStick  = new Joystick(LEFT_JOYSTICK_PORT),
+                     rightStick = new Joystick(RIGHT_JOYSTICK_PORT);
 
-    private Drivetrain drivetrain;
-    private Intake intake;
-    private Shooter shooter;
+    private Drivetrain drivetrain = new Drivetrain();
+    private Intake intake         = new Intake();
+    private Shooter shooter       = new Shooter(intake);
 
-    private Compressor compressor;
+    private Compressor compressor = new Compressor(PCM_A);
 
     public void robotInit() {
-        leftStick  = new Joystick(LEFT_JOYSTICK_PORT);
-        rightStick = new Joystick(RIGHT_JOYSTICK_PORT);
-
-        drivetrain = new Drivetrain();
-        intake     = new Intake();
-        shooter    = new Shooter();
-
-        compressor = new Compressor(PCM_A);
         compressor.start();
     }
 
@@ -37,14 +30,16 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         buttonsPressed();
 
+        intake.update();
+        shooter.update();
         drive();
     }
 
     private void drive() {
-        double left  = leftStick.getY();
-        double right = rightStick.getY();
+        double forward = leftStick.getY();
+        double turn    = rightStick.getX();
 
-        drivetrain.drive(left, right);
+        drivetrain.drive(forward, turn);
     }
 
     private void buttonsPressed() {
@@ -61,9 +56,9 @@ public class Robot extends IterativeRobot {
 
         // intake
         if (rightStick.get(1)) {
-            intake.roll(1);
+            intake.roll(0.7);
         } else if (rightStick.getOne(3, 4)) {
-            intake.roll(-1);
+            intake.roll(-0.7);
         } else {
             intake.stop();
         }
@@ -77,8 +72,6 @@ public class Robot extends IterativeRobot {
         // shooter
         if (rightStick.get(2)) {
             shooter.shoot();
-        } else if (rightStick.getOne(5, 6)) {
-            shooter.load();
         }
     }
 
