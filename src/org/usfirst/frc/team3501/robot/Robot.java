@@ -15,7 +15,6 @@ public class Robot extends IterativeRobot {
 
     private Drivetrain drivetrain = new Drivetrain();
     private Intake intake         = new Intake();
-    private Shooter shooter       = new Shooter(intake);
 
     private Compressor compressor = new Compressor(PCM_A);
 
@@ -31,13 +30,12 @@ public class Robot extends IterativeRobot {
         buttonsPressed();
 
         intake.update();
-        shooter.update();
         drive();
     }
 
     private void drive() {
         double forward = leftStick.getY();
-        double turn    = rightStick.getX();
+        double turn    = -rightStick.getX();
 
         drivetrain.drive(forward, turn);
     }
@@ -67,11 +65,6 @@ public class Robot extends IterativeRobot {
             intake.extend();
         } else if (leftStick.getOne(4, 6)) {
             intake.retract();
-        }
-
-        // shooter
-        if (rightStick.get(2)) {
-            shooter.shoot();
         }
     }
 

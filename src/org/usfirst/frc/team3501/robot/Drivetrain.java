@@ -2,6 +2,7 @@ package org.usfirst.frc.team3501.robot;
 
 import static org.usfirst.frc.team3501.robot.Consts.*;
 
+import java.util.function.DoubleFunction;
 import java.util.stream.Stream;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -25,8 +26,8 @@ public class Drivetrain {
         rearLeft   = new CANTalon(REAR_LEFT_ADDR);
         rearRight  = new CANTalon(REAR_RIGHT_ADDR);
 
-        leftShifter  = new DoubleSolenoid(PCM_B, 3, 6);
-        rightShifter = new DoubleSolenoid(PCM_B, 2, 7);
+        leftShifter  = new DoubleSolenoid(PCM_A, 4, 5);
+        rightShifter = new DoubleSolenoid(PCM_A, 6, 7);
 
         shifterState = LOW_GEAR;
         setShifters(shifterState);
@@ -43,49 +44,39 @@ public class Drivetrain {
         forward *= (shifterState == LOW_GEAR) ? LOW_GEAR_POWER_COEFF
                                               : HIGH_GEAR_POWER_COEFF;
 
-        if (flipped) {
+        if (flipped)
             forward *= -1;
-            turn *= -1;
-        }
 
         // begin code from github.com/Team254/FRC-2014
-        double wheelNonLinearity;
+
+        // might want this to be different for high / low gear
+        final double wheelNonLinearity = 0.5;
 
         double negInertia = turn - oldTurn;
         oldTurn = turn;
 
+        // Sin function that's scaled to make it feel better.
+        DoubleFunction<Double> scale = (double x) -> {
+            return Math.sin(Math.PI / 2.0 * wheelNonLinearity * x)
+                   / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
+        };
+
         if (shifterState == HIGH_GEAR) {
-            wheelNonLinearity = 0.6;
-
-            // Apply a sin function that's scaled to make it feel better.
-            turn = Math.sin(Math.PI / 2.0 * wheelNonLinearity * turn)
-                   / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-            turn = Math.sin(Math.PI / 2.0 * wheelNonLinearity * turn)
-                   / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
+            turn = scale.apply(scale.apply(turn));
         } else {
-            wheelNonLinearity = 0.5;
-
-            // Apply a sin function that's scaled to make it feel better.
-            turn = Math.sin(Math.PI / 2.0 * wheelNonLinearity * turn)
-                   / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-            turn = Math.sin(Math.PI / 2.0 * wheelNonLinearity * turn)
-                   / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-            turn = Math.sin(Math.PI / 2.0 * wheelNonLinearity * turn)
-                   / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
+            turn = scale.apply(scale.apply(scale.apply(turn)));
         }
 
-        double leftPwm, rightPwm, overPower;
-        double sensitivity;
+        double leftPwm, rightPwm;
+        final double sensitivity = 0.75;
 
-        double angularPower;
-        double linearPower;
+        double angularPower, linearPower;
 
         double negInertiaAccumulator = 0.0;
         double negInertiaScalar;
 
         if (shifterState == HIGH_GEAR) {
             negInertiaScalar = 5.0;
-            sensitivity = 0.75; // arbitrary
         } else {
             if (turn * negInertia > 0) {
                 negInertiaScalar = 2.5;
@@ -96,8 +87,6 @@ public class Drivetrain {
                     negInertiaScalar = 3.0;
                 }
             }
-
-            sensitivity = 0.75; // arbitrary
         }
 
         double negInertiaPower = negInertia * negInertiaScalar;
@@ -115,7 +104,6 @@ public class Drivetrain {
         linearPower = forward;
 
         // begin ignoring quickturn
-        overPower = 0.0;
         angularPower = Math.abs(forward) * turn * sensitivity
                        - quickStopAccumulator;
 
@@ -132,19 +120,14 @@ public class Drivetrain {
         leftPwm  += angularPower;
         rightPwm -= angularPower;
 
-        if (leftPwm > 1.0) {
-            rightPwm -= overPower * (leftPwm - 1.0);
+        if (leftPwm > 1.0)
             leftPwm = 1.0;
-        } else if (rightPwm > 1.0) {
-            leftPwm -= overPower * (rightPwm - 1.0);
+        else if (rightPwm > 1.0)
             rightPwm = 1.0;
-        } else if (leftPwm < -1.0) {
-            rightPwm += overPower * (-1.0 - leftPwm);
+        else if (leftPwm < -1.0)
             leftPwm = -1.0;
-        } else if (rightPwm < -1.0) {
-            leftPwm += overPower * (-1.0 - rightPwm);
+        else if (rightPwm < -1.0)
             rightPwm = -1.0;
-        }
         // end code from github.com/Team254/FRC-2014
 
         driveRaw(leftPwm, rightPwm);
