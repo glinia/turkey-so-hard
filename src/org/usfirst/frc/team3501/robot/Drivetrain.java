@@ -11,12 +11,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class Drivetrain {
 
     private CANTalon frontLeft, frontRight, rearLeft, rearRight;
-
     private DoubleSolenoid leftShifter, rightShifter;
 
     private DoubleSolenoid.Value shifterState;
-
-    private boolean flipped;
+    private boolean isFlipped;
 
     public Drivetrain() {
         frontLeft  = new CANTalon(FRONT_LEFT_ADDR);
@@ -30,12 +28,12 @@ public class Drivetrain {
         shifterState = LOW_GEAR;
         setShifters(shifterState);
         brake();
-        flipped = false;
+        isFlipped = false;
     }
 
     public void drive(double forward, double turn) {
         HashMap<String, Double> result =
-                DrivetrainAlgorithm.drive(forward, turn, shifterState, flipped);
+            DrivetrainAlgorithm.drive(forward, turn, shifterState, isFlipped);
 
         driveRaw(result.get("leftPwm"), result.get("rightPwm"));
     }
@@ -76,7 +74,7 @@ public class Drivetrain {
     }
 
     public void flip() {
-        flipped = !flipped;
+        isFlipped = !isFlipped;
     }
 
     private Stream<CANTalon> allTalons() {

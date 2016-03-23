@@ -12,7 +12,6 @@ public class Intake {
     public static final DoubleSolenoid.Value
                          EXTEND  = DoubleSolenoid.Value.kForward,
                          RETRACT = DoubleSolenoid.Value.kReverse;
-
     private DoubleSolenoid.Value STATE = RETRACT;
 
     public Intake() {
