@@ -1,7 +1,7 @@
 package org.usfirst.frc.team3501.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 import org.usfirst.frc.team3501.robot.Joystick;
@@ -20,6 +20,8 @@ public class Robot extends IterativeRobot {
 
     public void robotInit() {
         compressor.start();
+
+        CameraServer.getInstance().startAutomaticCapture("cam1");
     }
 
     public void teleopInit() {
@@ -34,10 +36,16 @@ public class Robot extends IterativeRobot {
     }
 
     private void drive() {
-        double forward = leftStick.getY();
-        double turn    = -rightStick.getX();
+        if (rightStick.get(2)) {
+            double turn = rightStick.getX();
 
-        drivetrain.drive(forward, turn);
+            drivetrain.driveRaw(turn, -turn);
+        } else {
+            double forward = leftStick.getY();
+            double turn    = -rightStick.getX();
+
+            drivetrain.drive(forward, turn);
+        }
     }
 
     private void buttonsPressed() {
@@ -66,10 +74,12 @@ public class Robot extends IterativeRobot {
         } else if (leftStick.getOne(4, 6)) {
             intake.retract();
         }
-    }
 
-    @SuppressWarnings("unused")
-    private void print(String message) {
-        DriverStation.reportWarning(message, false);
+        // compressor -- for testing only
+        if (rightStick.getThrottle() > 0) {
+            compressor.stop();
+        } else {
+            compressor.start();
+        }
     }
 }
