@@ -74,12 +74,5 @@ public class Robot extends IterativeRobot {
         } else if (leftStick.getOne(4, 6)) {
             intake.retract();
         }
-
-        // compressor -- for testing only
-        if (rightStick.getThrottle() > 0) {
-            compressor.stop();
-        } else {
-            compressor.start();
-        }
     }
 }
