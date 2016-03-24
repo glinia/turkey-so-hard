@@ -22,8 +22,8 @@ public class Drivetrain {
         rearLeft   = new CANTalon(REAR_LEFT_ADDR);
         rearRight  = new CANTalon(REAR_RIGHT_ADDR);
 
-        leftShifter  = new DoubleSolenoid(PCM_A, 4, 5);
-        rightShifter = new DoubleSolenoid(PCM_A, 6, 7);
+        leftShifter  = new DoubleSolenoid(PCM_B, 3, 6);
+        rightShifter = new DoubleSolenoid(PCM_B, 2, 7);
 
         shifterState = LOW_GEAR;
         setShifters(shifterState);

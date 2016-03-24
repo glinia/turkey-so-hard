@@ -15,8 +15,8 @@ public class Intake {
     private DoubleSolenoid.Value STATE = RETRACT;
 
     public Intake() {
-        left  = new DoubleSolenoid(PCM_A, 0, 1);
-        right = new DoubleSolenoid(PCM_A, 2, 3);
+        left  = new DoubleSolenoid(PCM_A, 5, 2);
+        right = new DoubleSolenoid(PCM_B, 5, 0);
 
         roller = new CANTalon(INTAKE_ROLLER_ADDR);
     }
